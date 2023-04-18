@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div style="margin: 15px 0">
+  <div class="article-manage-container">
+    <div class="search">
       <!-- 搜索框 -->
       <el-input @keyup.enter="search" class="search-input" clearable placeholder="请输入标题" v-model="queryParams.title">
         <template #prefix>
@@ -28,9 +28,12 @@
       <el-table-column type="selection" width="55"> </el-table-column>
       <el-table-column prop="id" label="ID" width="50"> </el-table-column>
       <el-table-column prop="title" label="标题" show-overflow-tooltip> </el-table-column>
-      <el-table-column prop="categoryTitle" label="栏目" show-overflow-tooltip> </el-table-column>
-      <el-table-column prop="username" label="作者" show-overflow-tooltip> </el-table-column>
-      <el-table-column label="操作">
+      <el-table-column prop="categoryTitle" label="栏目" width="120"> </el-table-column>
+      <el-table-column prop="username" label="作者" width="120"> </el-table-column>
+      <el-table-column prop="views" label="浏览量" width="120"></el-table-column>
+      <el-table-column prop="createTime" label="发布时间" show-overflow-tooltip> </el-table-column>
+      <el-table-column prop="updateTime" label="更新时间" show-overflow-tooltip></el-table-column>
+      <el-table-column label="操作" show-overflow-tooltip>
         <template v-slot="scope">
           <el-button @click="handleEdit(scope.$index, scope.row)">编辑 </el-button>
           <el-button type="danger" @click="handleDelete(scope.row.id)">删除 </el-button>
@@ -50,9 +53,10 @@
             <el-option v-for="item in categoryList" :key="item.id" :label="item.title" :value="item.id"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="文章内容" prop="content">
-          <el-input v-model="formData.content"></el-input>
-          <CustomEditor :content="formData.content" @content-change="contentChange"></CustomEditor>
+        <el-form-item label="" prop="content">
+          <!-- <el-input v-model="formData.content"></el-input> -->
+          <!-- <CustomRichEditor :content="formData.content" @content-change="contentChange"></CustomRichEditor> -->
+          <CustomMarkdownEditor :content="formData.content" @content-change="contentChange"></CustomMarkdownEditor>
         </el-form-item>
         <el-form-item label="状态" props="status">
           <el-select v-model="formData.status" clearable placeholder="请选择">
@@ -68,6 +72,8 @@
 //引入混合
 import { reactive, ref, getCurrentInstance } from 'vue'
 import { usePage } from '@/composables/usePage'
+import CustomRichEditor from '@/components/CustomRichEditor.vue'
+import CustomMarkdownEditor from '@/components/CustomMarkdownEditor.vue'
 
 const { proxy } = getCurrentInstance()
 const api = reactive({
@@ -101,9 +107,15 @@ const { tableData, isDialog, delArr, pageInfo, queryParams, searchMerge, statusL
 })
 </script>
 
-<style scoped>
-.search-input {
-  width: 200px;
-  margin-right: 10px;
+<style scoped lang="less">
+.article-manage-container {
+  padding: 0 15px;
+  .search {
+    margin: 15px 0 10px;
+    .search-input {
+      width: 200px;
+      margin-right: 10px;
+    }
+  }
 }
 </style>

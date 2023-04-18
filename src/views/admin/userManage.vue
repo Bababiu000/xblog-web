@@ -1,7 +1,7 @@
 <!-- eslint-disable no-unused-vars -->
 <template>
-  <div>
-    <div style="margin: 15px 0">
+  <div class="user-manage-container">
+    <div class="search">
       <!-- 搜索框 -->
       <el-input @keyup.enter="search" class="search-input" clearable placeholder="请输入名称" v-model="queryParams.username">
         <template #prefix>
@@ -24,8 +24,8 @@
       <el-button type="danger" :disabled="delArr.length > 0 ? false : true" @click="delAll">全部删除</el-button>
     </div>
     <!-- 表格区域 -->
-    <el-table ref="multipleTable" :data="tableData" @selection-change="selectionChange" tooltip-effect="dark" style="width: 100%" border stripe>
-      <el-table-column type="selection" width="55"> </el-table-column>
+    <el-table ref="multipleTable" :data="tableData" @selection-change="selectionChange" tooltip-effect="dark" border stripe>
+      <el-table-column type="selection" show-overflow-tooltip> </el-table-column>
       <el-table-column prop="id" label="ID" width="50"> </el-table-column>
       <el-table-column prop="username" label="用户名" width="120"></el-table-column>
       <!-- <el-table-column prop="motto" label="座右铭"></el-table-column> -->
@@ -39,7 +39,7 @@
       </el-table-column>
       <el-table-column prop="views" label="总浏览量" width="150"></el-table-column>
       <el-table-column prop="status" label="状态" width="80"></el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作" show-overflow-tooltip>
         <template #default="scope">
           <el-button @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
           <el-button type="danger" @click="handleDelete(scope.row.id)">删除</el-button>
@@ -117,9 +117,15 @@ const { tableData, isDialog, delArr, pageInfo, queryParams, searchMerge, statusL
   })
 </script>
 
-<style scoped>
-.search-input {
-  width: 200px;
-  margin-right: 10px;
+<style scoped lang="less">
+.user-manage-container {
+  padding: 0 15px;
+  .search {
+    margin: 15px 0 10px;
+    .search-input {
+      width: 200px;
+      margin-right: 10px;
+    }
+  }
 }
 </style>

@@ -24,6 +24,7 @@ export const setRoutes = () => {
       router.addRoute('Home', routeItem)
     })
   }
+  router.addRoute('Home', { path: '/articleDetail/:id', name: 'ArticleDetail', component: () => import('../views/user/articleDetail.vue') })
 }
 
 router.beforeEach((to, from, next) => {

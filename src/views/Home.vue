@@ -1,6 +1,8 @@
 <template>
   <el-container class="layout-container">
-    <Aside></Aside>
+    <div class="aside-container">
+      <Aside></Aside>
+    </div>
     <el-container class="right-side">
       <el-header>
         <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" :ellipsis="false" router>
@@ -17,7 +19,7 @@
           </el-sub-menu>
         </el-menu>
       </el-header>
-      <el-main>
+      <el-main :class="{ isFixed: isFixed }" @scroll="handleScroll" ref="mainRef">
         <router-view></router-view>
       </el-main>
     </el-container>
@@ -26,57 +28,12 @@
 
 <script setup>
 import Aside from '@/views/Aside.vue'
-import { ref, getCurrentInstance, computed } from 'vue'
+import { ref, getCurrentInstance, computed, onMounted } from 'vue'
 
 const { proxy } = getCurrentInstance()
 const activeIndex = computed(() => {
   return proxy.$route.path
 })
-
-// const menuList = [
-//   {
-//     routePath: '/articleList',
-//     title: '文章列表',
-//     children: [],
-//     isShow: true
-//   },
-//   {
-//     routePath: '/editArticle',
-//     title: '写博客',
-//     children: [],
-//     isShow: true
-//   },
-//   {
-//     routePath: '/articleManage',
-//     title: '文章管理',
-//     children: [],
-//     isShow: true
-//   },
-//   {
-//     routePath: '/userManage',
-//     title: '用户管理',
-//     children: [],
-//     isShow: true
-//   },
-//   {
-//     routePath: '/categoryManage',
-//     title: '栏目管理',
-//     children: [],
-//     isShow: true
-//   },
-//   {
-//     routePath: '/login',
-//     title: '登录',
-//     children: [],
-//     isShow: true
-//   },
-//   {
-//     routePath: '/register',
-//     title: '注册',
-//     children: [],
-//     isShow: true
-//   }
-// ]
 
 const menuList = localStorage.getItem('menuList') ? JSON.parse(localStorage.getItem('menuList')) : []
 
@@ -85,6 +42,13 @@ const logout = () => {
   localStorage.removeItem('curUser')
   localStorage.removeItem('menuList')
   localStorage.removeItem('token')
+}
+
+const isFixed = ref(false)
+const handleScroll = () => {
+  let scrollTop = document.querySelector('.el-main').scrollTop
+  console.log(scrollTop)
+  isFixed.value = scrollTop >= 5 ? true : false
 }
 </script>
 
@@ -95,37 +59,50 @@ const logout = () => {
 // }
 .layout-container {
   height: 100vh;
-  .el-header {
-    padding: 0;
-    // 菜单项hover
-    // .el-menu-item:hover {
-    //   background-color: #fff;
-    //   color: var(--el-menu-active-color);
-    // }
-    // // 选中菜单项的背景颜色
-    // .el-menu--horizontal .el-menu-item:not(.is-disabled):focus {
-    //   background-color: #fff;
-    // }
-    // // 选中菜单项的字体颜色
-    // .el-menu--horizontal > .el-menu-item.is-active {
-    //   color: var(--el-menu-active-color) !important;
-    // }
-    // .el-menu--horizontal > .el-sub-menu .el-sub-menu__title:hover {
-    //   color: var(--el-menu-active-color) !important;
-    // }
-    .el-menu {
-      .el-icon {
-        margin-top: 20px;
-        margin-left: -20px;
-        padding-right: 5px;
+  background: transparent url(../assets/bg.png) no-repeat fixed top center;
+  background-size: cover;
+  .aside-container {
+    background-color: #fff;
+  }
+  .el-container {
+    margin-left: 7px;
+    .el-header {
+      padding: 0;
+      // 菜单项hover
+      // .el-menu-item:hover {
+      //   background-color: #fff;
+      //   color: var(--el-menu-active-color);
+      // }
+      // // 选中菜单项的背景颜色
+      // .el-menu--horizontal .el-menu-item:not(.is-disabled):focus {
+      //   background-color: #fff;
+      // }
+      // // 选中菜单项的字体颜色
+      // .el-menu--horizontal > .el-menu-item.is-active {
+      //   color: var(--el-menu-active-color) !important;
+      // }
+      // .el-menu--horizontal > .el-sub-menu .el-sub-menu__title:hover {
+      //   color: var(--el-menu-active-color) !important;
+      // }
+      .el-menu {
+        .el-icon {
+          margin-top: 20px;
+          margin-left: -20px;
+          padding-right: 5px;
+        }
+      }
+      .flex-grow {
+        flex-grow: 1;
       }
     }
-    .flex-grow {
-      flex-grow: 1;
+    .el-main {
+      padding: 0;
+      margin-top: 5px;
+      background-color: #fff;
     }
-  }
-  .el-main {
-    padding: 0;
+    .isFixed {
+      margin-top: -2px;
+    }
   }
 }
 </style>

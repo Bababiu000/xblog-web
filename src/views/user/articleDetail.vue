@@ -11,32 +11,34 @@
       </el-descriptions-item>
     </el-descriptions>
 
-    <div style="text-indent: 2em" v-html="detail.content"></div>
+    <!-- <div style="text-indent: 2em; padding: 0 10px" v-html="detail.content"></div> -->
+    <!-- <custom-markdown-editor :content="detail.content" mode="preview"></custom-markdown-editor> -->
+    <custom-markdown-editor :content="detail.content" mode="preview" v-if="flag"></custom-markdown-editor>
   </div>
 </template>
 
 <script setup>
 import { ref, defineProps, getCurrentInstance } from 'vue'
+import CustomMarkdownEditor from '@/components/CustomMarkdownEditor.vue'
+
 const { proxy } = getCurrentInstance()
-const props = defineProps({
-  id: {
-    type: [Number, String],
-    default: '1'
-  }
-})
+
+const flag = ref(false) // 请求是否完成
 const detail = ref({})
-const getArticleDetail = async id => {
-  const res = await proxy.$http.get(`/article/detail/${id}`).catch(err => err)
+const getArticleDetail = async () => {
+  const res = await proxy.$http.get(`/article/detail/${proxy.$route.params.id}`).catch(err => err)
   if (res.code === 200) {
     detail.value = res.data
+    flag.value = true
   }
 }
-getArticleDetail(props.id)
+getArticleDetail()
 </script>
 
 <style lang="less">
 .article-detail-container {
   padding: 15px 25px 0;
+  margin-left: 15px;
   .el-descriptions__title {
     font-size: 28px;
   }
@@ -46,6 +48,13 @@ getArticleDetail(props.id)
     border-radius: 5px;
     background-color: #f8f8f8;
     color: #999aaa;
+  }
+  .editor-container {
+    margin-top: 0;
+    border: none;
+    .github-markdown-body {
+      padding: 0 0 16px;
+    }
   }
 }
 </style>

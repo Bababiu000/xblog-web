@@ -9,7 +9,8 @@
           <el-option v-for="item in categoryList" :key="item.id" :label="item.title" :value="item.id"></el-option>
         </el-select>
       </el-form-item>
-      <CustomEditor :content="formData.content" @content-change="contentChange"></CustomEditor>
+      <!-- <CustomRichEditor :content="formData.content" @content-change="contentChange"></CustomRichEditor> -->
+      <CustomMarkdownEditor></CustomMarkdownEditor>
     </el-form>
     <div class="footer">
       <el-button type="primary" @click="submit"> 发布文章 </el-button>
@@ -20,6 +21,8 @@
 
 <script setup>
 import { reactive, ref, getCurrentInstance } from 'vue'
+import CustomRichEditor from '@/components/CustomRichEditor.vue'
+import CustomMarkdownEditor from '@/components/CustomMarkdownEditor.vue'
 
 const { proxy } = getCurrentInstance()
 
@@ -56,7 +59,7 @@ getCategoryList()
 
 <style lang="less">
 .article-container {
-  padding: 20px 40px 75px;
+  padding: 20px 25px 75px;
   .footer {
     box-sizing: border-box;
     position: fixed;

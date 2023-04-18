@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div style="margin: 15px 0">
+  <div class="article-list-container">
+    <div class="search">
       <!-- 搜索框 -->
       <el-input @keyup.enter="search" class="search-input" clearable placeholder="请输入标题" v-model="queryParams.title">
         <template #prefix>
@@ -52,9 +52,17 @@ getList()
 getCategoryList()
 </script>
 
-<style>
-.search-input {
-  width: 200px;
-  margin-right: 10px;
+<style lang="less">
+.article-list-container {
+  .search {
+    margin: 15px 25px 10px;
+    .search-input {
+      width: 200px;
+      margin-right: 10px;
+    }
+  }
+  .el-pagination {
+    margin: 15px 25px;
+  }
 }
 </style>

@@ -41,7 +41,7 @@ const handleCurrentChange = val => {
 </script>
 <style scoped>
 .el-pagination {
-  margin: 15px auto;
+  margin: 15px 5px;
 }
 .page {
   text-align: center;

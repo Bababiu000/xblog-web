@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div style="margin: 15px 0">
+  <div class="category-manage-container">
+    <div class="search">
       <!-- 搜索框 -->
       <el-input @keyup.enter="search" style="width: 200px" clearable placeholder="请输入名称" v-model="queryParams.title">
         <template #prefix>
@@ -60,3 +60,16 @@ const { tableData, isDialog, delArr, pageInfo, queryParams, searchMerge, statusL
     formData
   })
 </script>
+
+<style lang="less">
+.category-manage-container {
+  padding: 0 15px;
+  .search {
+    margin: 15px 0 10px;
+    .search-input {
+      width: 200px;
+      margin-right: 10px;
+    }
+  }
+}
+</style>

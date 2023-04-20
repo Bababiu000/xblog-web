@@ -9,20 +9,19 @@
           <el-option v-for="item in categoryList" :key="item.id" :label="item.title" :value="item.id"></el-option>
         </el-select>
       </el-form-item>
-      <!-- <CustomRichEditor :content="formData.content" @content-change="contentChange"></CustomRichEditor> -->
-      <CustomMarkdownEditor></CustomMarkdownEditor>
+      <CustomMarkdownEditor :content="formData.content" @content-change="contentChange"> </CustomMarkdownEditor>
     </el-form>
     <div class="footer">
       <el-button type="primary" @click="submit"> 发布文章 </el-button>
-      <!-- <el-button @click="handleClose">取消</el-button> -->
+      <el-button @click="handleClose">取消</el-button>
     </div>
   </div>
 </template>
 
 <script setup>
-import { reactive, ref, getCurrentInstance } from 'vue'
-import CustomRichEditor from '@/components/CustomRichEditor.vue'
+import { reactive, ref, getCurrentInstance, onMounted } from 'vue'
 import CustomMarkdownEditor from '@/components/CustomMarkdownEditor.vue'
+import { picurlMatch } from '@/utils/picurlMatch.js'
 
 const { proxy } = getCurrentInstance()
 
@@ -37,11 +36,11 @@ const getCategoryList = async () => {
 
 const contentChange = editor => {
   formData.content = editor
-  console.log(formData)
 }
 
 const submit = () => {
   formData.userId = curUser.id
+  formData.picture = picurlMatch(formData.content)
   proxy.$http.post('/article/save', formData).then(res => {
     if (res.code === 200) {
       proxy.$message.success('发布成功')
@@ -65,8 +64,9 @@ getCategoryList()
     position: fixed;
     bottom: 0;
     left: 0;
-    width: 100%;
+    width: 98.9%;
     padding: 10px 80px;
+    margin-right: 50px;
     text-align: right;
     background-color: #fff;
     border-top: 1px solid #e5e6eb;

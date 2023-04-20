@@ -94,7 +94,7 @@ export const usePage = opts => {
     })
   }
   // 重置查询参数
-  const resetForm = () => {
+  const resetSearch = () => {
     queryParams.value = {}
     getList()
   }
@@ -140,7 +140,7 @@ export const usePage = opts => {
     delMessage()
   }
   // 编辑
-  const handleEdit = (i, item) => {
+  const handleEdit = item => {
     isDialog.value = true
     formData.value = item
   }
@@ -182,7 +182,7 @@ export const usePage = opts => {
     handleAdd,
     submitDialog,
     saveForm,
-    resetForm,
+    resetSearch,
     selectionChange,
     delMessage,
     delAll,

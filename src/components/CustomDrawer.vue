@@ -43,19 +43,18 @@ const props = defineProps({
 const emits = defineEmits(['close-drawer', 'submit-drawer'])
 
 const loading = ref(false)
-const timer = reactive({})
 
 const handleClose = () => {
   emits('close-drawer')
   proxy.$nextTick(() => proxy.$refs['formDataRef'].clearValidate())
 }
 const submitForm = () => {
+  console.log(props.formData)
   proxy.$nextTick(() => proxy.$refs['formDataRef'].clearValidate())
   proxy.$refs['formDataRef'].validate(valid => {
     if (valid) {
       emits('submit-drawer', props.formData)
     } else {
-      // console.log('error submit!!');
       proxy.$message.error('请填写符合条件的数据')
       return false
     }
@@ -67,8 +66,19 @@ const submitForm = () => {
 .demo-drawer__content {
   width: 80%;
   margin: 0 auto;
+  .el-form {
+    padding-bottom: 50px;
+  }
   .demo-drawer__footer {
+    box-sizing: border-box;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 98.9%;
+    padding: 10px 184px;
     text-align: right;
+    background-color: #fff;
+    border-top: 1px solid #e5e6eb;
   }
 }
 </style>

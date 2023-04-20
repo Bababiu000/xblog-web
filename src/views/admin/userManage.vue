@@ -20,7 +20,7 @@
       </el-input>
       <el-button class="ml-5" type="primary" @click="search"><i-ep-search style="margin-right: 4px"> </i-ep-search>搜索</el-button>
       <el-button class="ml-5" type="success" @click="handleAdd">新建</el-button>
-      <el-button type="warning" @click="resetForm">重置</el-button>
+      <el-button type="warning" @click="resetSearch">重置</el-button>
       <el-button type="danger" :disabled="delArr.length > 0 ? false : true" @click="delAll">全部删除</el-button>
     </div>
     <!-- 表格区域 -->
@@ -41,7 +41,7 @@
       <el-table-column prop="status" label="状态" width="80"></el-table-column>
       <el-table-column label="操作" show-overflow-tooltip>
         <template #default="scope">
-          <el-button @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+          <el-button @click="handleEdit(scope.row)">编辑</el-button>
           <el-button type="danger" @click="handleDelete(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
@@ -110,11 +110,35 @@ const rulesForm = reactive({
   ]
 })
 
-const { tableData, isDialog, delArr, pageInfo, queryParams, searchMerge, statusList, roleTypeList, getList, search, handleAdd, closeDialog, submitDialog, saveForm, resetForm, selectionChange, delMessage, delAll, handleDelete, handleEdit, delData, handleSizeChange, handleCurrentChange, onMounted } =
-  usePage({
-    api,
-    formData
-  })
+const {
+  tableData,
+  isDialog,
+  delArr,
+  pageInfo,
+  queryParams,
+  searchMerge,
+  statusList,
+  roleTypeList,
+  getList,
+  search,
+  handleAdd,
+  closeDialog,
+  submitDialog,
+  saveForm,
+  resetSearch,
+  selectionChange,
+  delMessage,
+  delAll,
+  handleDelete,
+  handleEdit,
+  delData,
+  handleSizeChange,
+  handleCurrentChange,
+  onMounted
+} = usePage({
+  api,
+  formData
+})
 </script>
 
 <style scoped lang="less">

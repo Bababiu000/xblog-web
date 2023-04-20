@@ -5,7 +5,7 @@ import { ElMessage } from 'element-plus'
 
 axios.defaults.baseURL = process.env.VUE_APP_SERVER
 const request = axios.create({
-  timeout: 5000
+  timeout: 50000
 })
 
 let loadingInstance = null
@@ -31,7 +31,9 @@ request.interceptors.response.use(
     }
   },
   error => {
-    ElMessage.error(error.massage, { duration: 3000 })
+    loadingInstance.close()
+    console.log(error)
+    ElMessage.error('请求错误！')
     return Promise.reject(error)
   }
 )

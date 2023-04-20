@@ -13,6 +13,15 @@ export default {
     return {
       locale: zhCn
     }
+  },
+  mounted() {
+    window.addEventListener('error', function onError(e) {
+      // Ignore ResizeObserver error
+      if (e.message === 'ResizeObserver loop limit exceeded') {
+        console.warn('Ignore ResizeObserver error')
+        return
+      }
+    })
   }
 }
 </script>

@@ -20,22 +20,22 @@
       </el-select>
       <el-button class="ml-5" type="primary" @click="search"><i-ep-search style="margin-right: 4px"> </i-ep-search>搜索</el-button>
       <el-button class="ml-5" type="success" @click="handleAdd">新建</el-button>
-      <el-button type="warning" @click="resetForm">重置</el-button>
+      <el-button type="warning" @click="resetSearch">重置</el-button>
       <el-button type="danger" :disabled="delArr.length > 0 ? false : true" @click="delAll">全部删除</el-button>
     </div>
     <!-- 表格区域 -->
     <el-table ref="multipleTable" :data="tableData" @selection-change="selectionChange" tooltip-effect="dark" style="width: 100%" border stripe>
       <el-table-column type="selection" width="55"> </el-table-column>
       <el-table-column prop="id" label="ID" width="50"> </el-table-column>
-      <el-table-column prop="title" label="标题" show-overflow-tooltip> </el-table-column>
+      <el-table-column prop="title" label="标题" width="250"> </el-table-column>
       <el-table-column prop="categoryTitle" label="栏目" width="120"> </el-table-column>
-      <el-table-column prop="username" label="作者" width="120"> </el-table-column>
-      <el-table-column prop="views" label="浏览量" width="120"></el-table-column>
-      <el-table-column prop="createTime" label="发布时间" show-overflow-tooltip> </el-table-column>
-      <el-table-column prop="updateTime" label="更新时间" show-overflow-tooltip></el-table-column>
+      <el-table-column prop="username" label="作者" width="100"> </el-table-column>
+      <el-table-column prop="views" label="浏览量" width="100"></el-table-column>
+      <el-table-column prop="createTime" label="发布时间" width="180"> </el-table-column>
+      <el-table-column prop="updateTime" label="更新时间" width="180"></el-table-column>
       <el-table-column label="操作" show-overflow-tooltip>
         <template v-slot="scope">
-          <el-button @click="handleEdit(scope.$index, scope.row)">编辑 </el-button>
+          <el-button @click="handleEdit(scope.row)">编辑 </el-button>
           <el-button type="danger" @click="handleDelete(scope.row.id)">删除 </el-button>
         </template>
       </el-table-column>
@@ -43,7 +43,7 @@
     <!-- 分页组件 -->
     <CustomPages @size-change="handleSizeChange" @current-change="handleCurrentChange" :currentPage="pageInfo.pageNum" :total="pageInfo.total" :pageSize="pageInfo.pageSize"></CustomPages>
     <!-- 表单组件 -->
-    <CustomDrawer @close-drawer="isDialog = false" @submit-drawer="submitDialog" :form-data="formData" :rules-form="rulesForm" :is-dialog="isDialog" :size="'100%'">
+    <CustomDrawer @close-drawer="isDialog = false" @submit-drawer="submit" :form-data="formData" :rules-form="rulesForm" :is-dialog="isDialog" size="100%">
       <template v-slot:content>
         <el-form-item label="标题" prop="title">
           <el-input v-model="formData.title"></el-input>
@@ -53,9 +53,7 @@
             <el-option v-for="item in categoryList" :key="item.id" :label="item.title" :value="item.id"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="" prop="content">
-          <!-- <el-input v-model="formData.content"></el-input> -->
-          <!-- <CustomRichEditor :content="formData.content" @content-change="contentChange"></CustomRichEditor> -->
+        <el-form-item label="" props="content">
           <CustomMarkdownEditor :content="formData.content" @content-change="contentChange"></CustomMarkdownEditor>
         </el-form-item>
         <el-form-item label="状态" props="status">
@@ -72,8 +70,8 @@
 //引入混合
 import { reactive, ref, getCurrentInstance } from 'vue'
 import { usePage } from '@/composables/usePage'
-import CustomRichEditor from '@/components/CustomRichEditor.vue'
 import CustomMarkdownEditor from '@/components/CustomMarkdownEditor.vue'
+import { picurlMatch } from '@/utils/picurlMatch.js'
 
 const { proxy } = getCurrentInstance()
 const api = reactive({
@@ -99,9 +97,15 @@ const contentChange = editor => {
   formData.value.content = editor
 }
 
+const submit = () => {
+  isDialog.value = false
+  formData.value.picture = picurlMatch(formData.value.content)
+  saveForm()
+}
+
 getCategoryList()
 
-const { tableData, isDialog, delArr, pageInfo, queryParams, searchMerge, statusList, roleTypeList, getList, search, handleAdd, submitDialog, saveForm, resetForm, selectionChange, delMessage, delAll, handleDelete, handleEdit, delData, handleSizeChange, handleCurrentChange, onMounted } = usePage({
+const { tableData, isDialog, delArr, pageInfo, queryParams, searchMerge, statusList, roleTypeList, getList, search, handleAdd, submitDialog, saveForm, resetSearch, selectionChange, delMessage, delAll, handleDelete, handleEdit, delData, handleSizeChange, handleCurrentChange, onMounted } = usePage({
   api,
   formData
 })

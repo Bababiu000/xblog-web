@@ -8,7 +8,8 @@
     </div>
     <el-descriptions :column="1" :size="size" border v-show="!isCollapse">
       <template #title>
-        <el-avatar shape="square" :size="80" :src="curUser.avatarUrl" />
+        <img :src="curUser.avatarUrl" alt="" class="avatar" v-if="curUser.avatarUrl" />
+        <img src="https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png" alt="" class="avatar" v-else />
       </template>
       <el-descriptions-item>
         <template #label>
@@ -75,12 +76,19 @@ const size = ref('')
 .el-aside {
   position: relative;
   padding: 100px 15px 0;
+  height: 100vh;
   .collapse-button {
     position: absolute;
     top: 19px;
     right: 8px;
   }
   .el-descriptions {
+    .avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 5px;
+      border: 1px solid #e3e3e3;
+    }
     .el-descriptions__header {
       justify-content: center;
     }

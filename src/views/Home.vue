@@ -47,7 +47,6 @@ const logout = () => {
 const isFixed = ref(false)
 const handleScroll = () => {
   let scrollTop = document.querySelector('.el-main').scrollTop
-  console.log(scrollTop)
   isFixed.value = scrollTop >= 5 ? true : false
 }
 </script>

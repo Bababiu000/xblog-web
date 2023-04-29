@@ -64,7 +64,7 @@ const handleScroll = () => {
     background-color: #fff;
   }
   .el-container {
-    margin-left: 7px;
+    margin-left: 10px;
     .el-header {
       padding: 0;
       // 菜单项hover
@@ -97,7 +97,7 @@ const handleScroll = () => {
     .el-main {
       padding: 0;
       margin-top: 5px;
-      background-color: #fff;
+      background-color: transparent;
     }
     .isFixed {
       margin-top: -2px;

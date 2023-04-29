@@ -29,10 +29,10 @@
       <el-table-column prop="id" label="ID" width="50"> </el-table-column>
       <el-table-column prop="title" label="标题" width="250"> </el-table-column>
       <el-table-column prop="categoryTitle" label="栏目" width="120"> </el-table-column>
+      <el-table-column prop="tags" label="标签" width="180" show-overflow-tooltip> </el-table-column>
       <el-table-column prop="username" label="作者" width="100"> </el-table-column>
       <el-table-column prop="views" label="浏览量" width="100"></el-table-column>
       <el-table-column prop="createTime" label="发布时间" width="180"> </el-table-column>
-      <el-table-column prop="updateTime" label="更新时间" width="180"></el-table-column>
       <el-table-column label="操作" show-overflow-tooltip>
         <template v-slot="scope">
           <el-button @click="handleEdit(scope.row)">编辑 </el-button>
@@ -43,7 +43,7 @@
     <!-- 分页组件 -->
     <CustomPages @size-change="handleSizeChange" @current-change="handleCurrentChange" :currentPage="pageInfo.pageNum" :total="pageInfo.total" :pageSize="pageInfo.pageSize"></CustomPages>
     <!-- 表单组件 -->
-    <CustomDrawer @close-drawer="isDialog = false" @submit-drawer="submit" :form-data="formData" :rules-form="rulesForm" :is-dialog="isDialog" size="100%">
+    <CustomDrawer @close-drawer="onCloseDrawer" @submit-drawer="submit" :form-data="formData" :rules-form="rulesForm" :is-dialog="isDialog" size="100%">
       <template v-slot:content>
         <el-form-item label="标题" prop="title">
           <el-input v-model="formData.title"></el-input>
@@ -52,6 +52,11 @@
           <el-select v-model="formData.categoryId" clearable placeholder="请选择">
             <el-option v-for="item in categoryList" :key="item.id" :label="item.title" :value="item.id"></el-option>
           </el-select>
+        </el-form-item>
+        <el-form-item label="标签" prop="tags">
+          <el-check-tag v-for="tag in tagList" :key="tag.id" :checked="currentTagList.includes(tag.id)" type="info" effect="plain" round @change="tagChange($event, tag.id)">
+            {{ tag.name }}
+          </el-check-tag>
         </el-form-item>
         <el-form-item label="" props="content">
           <CustomMarkdownEditor :content="formData.content" @content-change="contentChange"></CustomMarkdownEditor>
@@ -79,6 +84,7 @@ const api = reactive({
   saveUrl: '/article/save',
   delUrl: '/article/delBatch'
 })
+
 const formData = ref({
   id: null,
   title: ''
@@ -86,40 +92,84 @@ const formData = ref({
 const rulesForm = reactive({
   title: [{ required: true, message: '请输入标题', trigger: 'blur' }]
 })
-const categoryList = ref([])
-
-const getCategoryList = async () => {
-  const res = await proxy.$http.get('/category/all').catch(err => err)
-  if (res.code === 200) categoryList.value = res.data
-}
 
 const contentChange = editor => {
   formData.value.content = editor
 }
 
-const submit = () => {
+const curUser = JSON.parse(localStorage.getItem('curUser'))
+// 编辑
+const handleEdit = item => {
+  isDialog.value = true
+  formData.value = item
+  getCurrentTagList()
+}
+const tagChange = (status, tagId) => {
+  if (status) currentTagList.value.push(tagId)
+  else currentTagList.value.pop(categoryList.value.indexOf(tagId))
+}
+const onCloseDrawer = () => {
   isDialog.value = false
+  currentTagList.value = []
+}
+const submit = async () => {
+  isDialog.value = false
+  formData.value.userId = curUser.id
   formData.value.picture = picurlMatch(formData.value.content)
   saveForm()
 }
+// 提交新增或更新
+const saveForm = async () => {
+  const res1 = await proxy.$http.post(api.saveUrl, formData.value).catch(err => err)
+  if (res1.code != '200') return
+  let articleId = res1.data
+  let articleTagList = currentTagList.value.map(tagId => {
+    return { articleId: articleId, tagId: tagId }
+  })
+  const res2 = await proxy.$http.post(`/article-tag/save`, articleTagList).catch(err => err)
+  if (res2.code == '200') {
+    proxy.$message({ message: '操作成功', type: 'success' })
+    getList()
+  }
+  currentTagList.value = []
+}
 
+const categoryList = ref([])
+const tagList = ref([])
+const currentTagList = ref([])
+const getCategoryList = async () => {
+  const res = await proxy.$http.get('/category/all').catch(err => err)
+  if (res.code === 200) categoryList.value = res.data
+}
+const getTagList = async () => {
+  const res = await proxy.$http.get('/tag/all').catch(err => err)
+  if (res.code === 200) tagList.value = res.data
+}
+const getCurrentTagList = async () => {
+  const res = await proxy.$http.get(`/article-tag/${formData.value.id}`).catch(err => err)
+  if (res.code === 200) currentTagList.value = res.data
+}
 getCategoryList()
-
-const { tableData, isDialog, delArr, pageInfo, queryParams, searchMerge, statusList, roleTypeList, getList, search, handleAdd, submitDialog, saveForm, resetSearch, selectionChange, delMessage, delAll, handleDelete, handleEdit, delData, handleSizeChange, handleCurrentChange, onMounted } = usePage({
+getTagList()
+const { tableData, isDialog, delArr, pageInfo, queryParams, searchMerge, statusList, roleTypeList, getList, search, handleAdd, submitDialog, resetSearch, selectionChange, delMessage, delAll, handleDelete, delData, handleSizeChange, handleCurrentChange, onMounted } = usePage({
   api,
   formData
 })
 </script>
 
-<style scoped lang="less">
+<style lang="less">
 .article-manage-container {
-  padding: 0 15px;
+  padding: 1px 15px;
+  background-color: #fff;
   .search {
     margin: 15px 0 10px;
     .search-input {
       width: 200px;
       margin-right: 10px;
     }
+  }
+  .el-check-tag {
+    margin-right: 10px;
   }
 }
 </style>

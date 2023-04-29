@@ -16,7 +16,7 @@
     <el-table ref="multipleTable" :data="tableData" @selection-change="selectionChange" tooltip-effect="dark" style="width: 100%" border stripe>
       <el-table-column type="selection" width="55"> </el-table-column>
       <el-table-column prop="id" label="ID" width="50"> </el-table-column>
-      <el-table-column prop="title" label="标题" show-overflow-tooltip> </el-table-column>
+      <el-table-column prop="name" label="标签名称" show-overflow-tooltip> </el-table-column>
       <el-table-column label="操作">
         <template v-slot="scope">
           <el-button @click="handleEdit(scope.row)">编辑 </el-button>
@@ -27,10 +27,10 @@
     <!-- 分页组件 -->
     <CustomPages @size-change="handleSizeChange" @current-change="handleCurrentChange" :currentPage="pageInfo.pageNum" :total="pageInfo.total" :pageSize="pageInfo.pageSize"></CustomPages>
     <!-- 表单组件 -->
-    <CustomDialog @close-dialog="isDialog = false" @submit-dialog="submitDialog" :form-data="formData" :rules-form="rulesForm" :title="'栏目'" v-model="isDialog">
+    <CustomDialog @close-dialog="isDialog = false" @submit-dialog="submitDialog" :form-data="formData" :rules-form="rulesForm" :title="'标签'" v-model="isDialog">
       <template v-slot:content>
-        <el-form-item label="标题" prop="title">
-          <el-input v-model="formData.title"></el-input>
+        <el-form-item label="标签名称" prop="name">
+          <el-input v-model="formData.name"></el-input>
         </el-form-item>
       </template>
     </CustomDialog>
@@ -41,16 +41,16 @@
 import { reactive, ref } from 'vue'
 import { usePage } from '@/composables/usePage'
 const api = reactive({
-  listUrl: '/category/list',
-  saveUrl: '/category/save',
-  delUrl: '/category/delBatch'
+  listUrl: '/tag/list',
+  saveUrl: '/tag/save',
+  delUrl: '/tag/delBatch'
 })
 const formData = ref({
   id: null,
-  title: ''
+  name: ''
 })
 const rulesForm = reactive({
-  title: [{ required: true, message: '请输入标题', trigger: 'blur' }]
+  name: [{ required: true, message: '请输入标签名称', trigger: 'blur' }]
 })
 
 const {
@@ -86,8 +86,8 @@ const {
 
 <style lang="less">
 .category-manage-container {
-  background-color: #fff;
   padding: 1px 15px;
+  background-color: #fff;
   .search {
     margin: 15px 0 10px;
     .search-input {

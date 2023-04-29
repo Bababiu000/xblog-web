@@ -38,7 +38,7 @@ getArticleDetail()
 <style lang="less">
 .article-detail-container {
   padding: 15px 25px 0;
-  margin-left: 15px;
+  background-color: #fff;
   .el-descriptions__title {
     font-size: 28px;
   }

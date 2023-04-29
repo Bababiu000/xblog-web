@@ -1,14 +1,14 @@
 <template>
   <div class="editor-container">
     <!-- 上传图片菜单默认为禁用状态 设置 disabled-menus 为空数组可以开启。 -->
-    <v-md-editor v-model="editContent" @change="handleChange" autofocus @upload-image="handleUploadImage" :mode="mode" :disabled-menus="[]" :include-level="[1, 2, 3, 4]" height="600px"></v-md-editor>
+    <v-md-editor v-model="editContent" @change="handleChange" autofocus @upload-image="handleUploadImage" :mode="mode" :disabled-menus="[]" :include-level="[1, 2, 3, 4]"></v-md-editor>
   </div>
 </template>
 
 <style></style>
 
 <script setup>
-import { ref, defineProps, defineEmits, getCurrentInstance, computed } from 'vue'
+import { ref, defineProps, defineEmits, getCurrentInstance, watchEffect } from 'vue'
 
 const { proxy } = getCurrentInstance()
 
@@ -22,7 +22,12 @@ const props = defineProps({
     default: 'edit'
   }
 })
-const editContent = computed(() => props.content)
+
+const editContent = ref('')
+watchEffect(() => {
+  editContent.value = props.content
+})
+
 const emits = defineEmits(['content-change'])
 const handleChange = () => {
   emits('content-change', editContent.value)

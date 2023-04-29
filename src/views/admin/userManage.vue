@@ -143,7 +143,8 @@ const {
 
 <style scoped lang="less">
 .user-manage-container {
-  padding: 0 15px;
+  padding: 1px 15px;
+  background-color: #fff;
   .search {
     margin: 15px 0 10px;
     .search-input {

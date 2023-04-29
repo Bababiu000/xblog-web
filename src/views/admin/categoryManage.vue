@@ -86,7 +86,8 @@ const {
 
 <style lang="less">
 .category-manage-container {
-  padding: 0 15px;
+  background-color: #fff;
+  padding: 1px 15px;
   .search {
     margin: 15px 0 10px;
     .search-input {

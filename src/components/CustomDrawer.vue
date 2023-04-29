@@ -15,7 +15,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, defineProps, defineEmits, computed, getCurrentInstance } from 'vue'
+import { ref, reactive, defineProps, defineEmits, getCurrentInstance } from 'vue'
 const { proxy } = getCurrentInstance()
 const props = defineProps({
   isDialog: {
@@ -49,7 +49,6 @@ const handleClose = () => {
   proxy.$nextTick(() => proxy.$refs['formDataRef'].clearValidate())
 }
 const submitForm = () => {
-  console.log(props.formData)
   proxy.$nextTick(() => proxy.$refs['formDataRef'].clearValidate())
   proxy.$refs['formDataRef'].validate(valid => {
     if (valid) {

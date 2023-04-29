@@ -11,14 +11,19 @@
         </div>
       </template>
       <div class="text item" v-html="contentSlice(item.content)"></div>
+      <div class="tags" v-if="item.tags">
+        <el-tag v-for="tag in item.tags.split(', ')" :key="tag" type="info" effect="plain" round>
+          {{ tag }}
+        </el-tag>
+      </div>
       <div class="card-footer">
         <span class="author"> 作者: {{ item.username }} </span>
         <div class="time">
           <span class="create-time">
-            发布时间: <i style="color: #409eff; font-style: normal">{{ item.createTime }}</i>
+            发布时间: <i style="color: #409eff; font-style: normal">{{ dateFormat(item.createTime) }}</i>
           </span>
           <span class="update-time" v-if="item.updateTime">
-            更新时间: <i style="color: #409eff; font-style: normal">{{ item.updateTime }}</i>
+            更新时间: <i style="color: #409eff; font-style: normal">{{ dateFormat(item.createTime) }}</i>
           </span>
         </div>
       </div>
@@ -26,6 +31,7 @@
   </div>
 </template>
 <script setup>
+import moment from 'moment'
 import { defineProps, getCurrentInstance } from 'vue'
 const { proxy } = getCurrentInstance()
 const props = defineProps({
@@ -40,6 +46,10 @@ const props = defineProps({
     default: ''
   }
 })
+
+const dateFormat = date => {
+  return moment(date).format('YYYY-MM-DD')
+}
 
 const contentSlice = content => {
   return content.length > 200 ? content.slice(0, 200).concat('...') : content
@@ -66,7 +76,7 @@ const toArticleDetail = id => {
 
 .card-box {
   display: flex;
-  height: 120px;
+  // height: 160px;
   padding: 15px 20px;
   border-bottom: 1px solid #f0f0f2;
   background-color: #fff;
@@ -77,7 +87,7 @@ const toArticleDetail = id => {
   }
 
   .article-cover {
-    width: 200px;
+    width: 220px;
     height: 120px;
     margin-right: 15px;
     border: 1px solid #e3e3e3;
@@ -113,6 +123,13 @@ const toArticleDetail = id => {
     color: #555666;
     flex-direction: column;
     justify-content: space-between;
+    .tags {
+      margin: 10px 0 15px;
+      .el-tag {
+        margin-right: 5px;
+      }
+    }
+
     .card-footer {
       display: flex;
       justify-content: space-between;

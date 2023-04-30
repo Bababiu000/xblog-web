@@ -134,9 +134,6 @@ export const usePage = opts => {
   const handleDelete = id => {
     delArr.value = []
     delArr.value.push(id)
-    /*            console.log(i)
-                    console.log(item)*/
-    // this.isMessageBox = true
     delMessage()
   }
   // 编辑

@@ -37,6 +37,8 @@ getArticleDetail()
 
 <style lang="less">
 .article-detail-container {
+  flex: 1;
+  width: 75%;
   padding: 15px 25px 0;
   background-color: #fff;
   .el-descriptions__title {

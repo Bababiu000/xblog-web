@@ -93,6 +93,7 @@ getTagList()
 
 <style lang="less">
 .article-container {
+  flex: 1;
   padding: 20px 25px 75px;
   background-color: #fff;
   .el-check-tag {
@@ -105,6 +106,7 @@ getTagList()
     left: 0;
     width: 98.9%;
     padding: 10px 80px;
+    padding: 10px 2%;
     margin-right: 50px;
     text-align: right;
     background-color: #fff;

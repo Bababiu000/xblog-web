@@ -7,7 +7,7 @@ const router = createRouter({
     { path: '/', name: 'Home', redirect: '/articleList', component: () => import('../views/Home') },
     { path: '/login', name: 'Login', component: () => import('../views/Login') },
     { path: '/register', name: 'Register', component: () => import('../views/Register') },
-    { path: '/editUserInfo', name: 'EditUserInfo', component: () => import('../views/editUserInfo') }
+    { path: '/editUserInfo', name: 'EditUserInfo', component: () => import('../views/EditUserInfo') }
   ]
 })
 
@@ -24,7 +24,7 @@ export const setRoutes = () => {
       router.addRoute('Home', routeItem)
     })
   }
-  router.addRoute('Home', { path: '/articleDetail/:id', name: 'ArticleDetail', component: () => import('../views/user/articleDetail.vue') })
+  router.addRoute('Home', { path: '/articleDetail/:id', name: 'ArticleDetail', component: () => import('../views/user/ArticleDetail.vue') })
 }
 
 router.beforeEach((to, from, next) => {

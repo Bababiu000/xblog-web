@@ -143,6 +143,7 @@ const {
 
 <style scoped lang="less">
 .user-manage-container {
+  flex: 1;
   padding: 1px 15px;
   background-color: #fff;
   .search {

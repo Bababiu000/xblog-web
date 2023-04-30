@@ -21,7 +21,7 @@ request.interceptors.response.use(
     loadingInstance.close()
     let res = response.data
     if (res.code === 200) return res
-    else if (res.code === 401 || res.code === 403) {
+    else if (res.code === 401) {
       ElMessage.error(res.msg)
       router.push('/login')
       return Promise.reject(res)

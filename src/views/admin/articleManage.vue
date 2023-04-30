@@ -159,6 +159,7 @@ const { tableData, isDialog, delArr, pageInfo, queryParams, searchMerge, statusL
 
 <style lang="less">
 .article-manage-container {
+  flex: 1;
   padding: 1px 15px;
   background-color: #fff;
   .search {

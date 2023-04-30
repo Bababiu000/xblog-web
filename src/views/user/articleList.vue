@@ -70,6 +70,7 @@ getTagList()
 
 <style lang="less">
 .content-container {
+  flex: 1;
   display: flex;
   .article-list-container {
     background-color: #fff;

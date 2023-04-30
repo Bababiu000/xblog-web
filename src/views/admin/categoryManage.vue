@@ -86,6 +86,7 @@ const {
 
 <style lang="less">
 .category-manage-container {
+  flex: 1;
   background-color: #fff;
   padding: 1px 15px;
   .search {

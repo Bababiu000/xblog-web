@@ -51,7 +51,7 @@ const handleScroll = () => {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 // style attribute {
 //   --el-menu-active-color: #348cd9;
 //   --el-menu-text-color: var(--el-menu-active-color);
@@ -83,21 +83,15 @@ const handleScroll = () => {
       // .el-menu--horizontal > .el-sub-menu .el-sub-menu__title:hover {
       //   color: var(--el-menu-active-color) !important;
       // }
-      .el-menu {
-        .el-icon {
-          margin-top: 20px;
-          margin-left: -20px;
-          padding-right: 5px;
-        }
-      }
       .flex-grow {
         flex-grow: 1;
       }
     }
     .el-main {
+      display: flex;
+      flex-direction: column;
       padding: 0;
       margin-top: 5px;
-      background-color: transparent;
     }
     .isFixed {
       margin-top: -2px;

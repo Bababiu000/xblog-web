@@ -31,8 +31,9 @@
   </div>
 </template>
 <script setup>
-import moment from 'moment'
 import { defineProps, getCurrentInstance } from 'vue'
+import { dateFormat } from '@/utils/dateFormat'
+
 const { proxy } = getCurrentInstance()
 const props = defineProps({
   tableData: {
@@ -46,10 +47,6 @@ const props = defineProps({
     default: ''
   }
 })
-
-const dateFormat = date => {
-  return moment(date).format('YYYY-MM-DD')
-}
 
 const contentSlice = content => {
   return content.length > 200 ? content.slice(0, 200).concat('...') : content

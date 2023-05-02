@@ -11,8 +11,6 @@
       </el-descriptions-item>
     </el-descriptions>
 
-    <!-- <div style="text-indent: 2em; padding: 0 10px" v-html="detail.content"></div> -->
-    <!-- <custom-markdown-editor :content="detail.content" mode="preview"></custom-markdown-editor> -->
     <custom-markdown-editor :content="detail.content" mode="preview" v-if="flag"></custom-markdown-editor>
   </div>
 </template>

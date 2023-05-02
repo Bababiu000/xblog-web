@@ -32,7 +32,7 @@
 </template>
 
 <script setup>
-import { ref, getCurrentInstance } from 'vue'
+import { ref, getCurrentInstance, watch } from 'vue'
 import CustomCard from '@/components/CustomCard.vue'
 import { usePage } from '@/composables/usePage'
 
@@ -45,13 +45,20 @@ const routeName = ref('ArticleDetail')
 
 const { tableData, pageInfo, queryParams, searchMerge, getList, search, handleSizeChange, handleCurrentChange } = usePage({ api })
 
-const selectedTagId = ref(0)
+const selectedTagId = ref('')
 const selectTag = tagId => {
   selectedTagId.value = tagId
   queryParams.value.tagId = tagId
   search()
-  queryParams.value.tagId = 0
 }
+// 控制标签高亮显示
+const listChange = watch(tableData, () => {
+  if (!queryParams.value.tagId) {
+    selectedTagId.value = ''
+  } else {
+    queryParams.value.tagId = ''
+  }
+})
 
 const categoryList = ref([])
 const tagList = ref([])

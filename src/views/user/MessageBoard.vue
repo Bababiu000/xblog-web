@@ -57,7 +57,7 @@ const rulesForm = reactive({
 })
 const { tableData, pageInfo, isDialog, getList, submitDialog, saveForm, handleEdit, handleDelete, handleSizeChange, handleCurrentChange } = usePage({ api, formData })
 
-const curUser = JSON.parse(localStorage.getItem('curUser'))
+const curUser = JSON.parse(localStorage.getItem('curUser')) || {}
 const sendMsg = () => {
   if (content.value == '') {
     proxy.$message.error('留言内容不能为空！')
@@ -147,6 +147,7 @@ const sendMsg = () => {
   .header-img {
     width: 60px;
     height: 60px;
+    border: 1px solid #e3e3e3;
     border-radius: 10px;
   }
   div {

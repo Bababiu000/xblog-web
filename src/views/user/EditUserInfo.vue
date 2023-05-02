@@ -2,10 +2,13 @@
   <div class="userinfo-container">
     <div class="user-form">
       <h3 class="title">用户信息</h3>
-      <el-upload class="avatar-uploader" :action="uploadPath" :show-file-list="false" :on-success="handleAvatarSuccess">
-        <img v-if="formData.avatarUrl" :src="formData.avatarUrl" class="avatar" />
-        <i v-else class="avatar-uploader-icon"><i-ep-plus /></i>
-      </el-upload>
+      <div class="avatar-uploader">
+        <div class="avatar" @click="avatarDialogVisible = true">
+          <img v-if="formData.avatarUrl" :src="formData.avatarUrl" />
+          <i v-else class="avatar-uploader-icon"><i-ep-plus /></i>
+        </div>
+      </div>
+      <AvatarCropper :avatar-dialog-visible="avatarDialogVisible" @close-avatar-dialog="avatarDialogVisible = false" @avatar-success="handleAvatarSuccess"></AvatarCropper>
       <el-form :model="formData" :rules="rulesForm" ref="formDataRef" label-width="100px" class="demo-ruleForm">
         <el-form-item label="用户名" prop="username">
           <el-input v-model="formData.username"></el-input>
@@ -32,13 +35,14 @@
 </template>
 
 <script setup>
-import { reactive, getCurrentInstance } from 'vue'
+import { ref, reactive, getCurrentInstance } from 'vue'
+import AvatarCropper from '@/components/AvatarCropper.vue'
 const { proxy } = getCurrentInstance()
 const curUser = JSON.parse(localStorage.getItem('curUser'))
 const formData = reactive(Object.assign({}, curUser))
 
-// 上传文件的接口
-const uploadPath = `${process.env.VUE_APP_SERVER}/file/upload`
+// 头像上传组件显示
+const avatarDialogVisible = ref(false)
 
 // 验证用户名
 const checkUsername = async (rule, value, callback) => {
@@ -80,15 +84,14 @@ const handleAvatarSuccess = res => {
 .userinfo-container {
   width: 100%;
   height: 100vh;
-  background: transparent url(../assets/login-bg.jpg) no-repeat fixed top center;
+  background: transparent url(@/assets/login-bg.jpg) no-repeat fixed top center;
   background-size: cover;
   overflow: hidden;
   .user-form {
     margin: 100px auto 0;
-    // padding: 25px 35px 35px 0;
     padding: 25px 0;
     width: 30%;
-    background-color: #fff;
+    background-color: rgba(255, 255, 255, 0.85);
     border-radius: 5px;
     .el-form {
       padding-right: 35px;
@@ -106,31 +109,38 @@ const handleAvatarSuccess = res => {
     }
   }
   .avatar-uploader {
-    text-align: center;
-    padding-bottom: 10px;
-  }
-  .avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
+    margin: 0 auto;
+    width: 100px;
+    height: 100px;
     overflow: hidden;
-  }
-  .avatar-uploader .el-upload:hover {
-    border-color: #409eff;
-  }
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 100px;
-    height: 100px;
-    line-height: 100px;
-    text-align: center;
-  }
-  .avatar {
-    width: 100px;
-    height: 100px;
-    display: block;
+    margin-bottom: 15px;
+    .avatar {
+      position: relative;
+      overflow: hidden;
+      height: 100px;
+      box-sizing: border-box;
+      border: 1px dashed #d9d9d9;
+      border-radius: 6px;
+      cursor: pointer;
+      line-height: 100px;
+      text-align: center;
+      &:hover {
+        border-color: #409eff;
+      }
+      img {
+        width: 100px;
+        height: 100px;
+        display: block;
+      }
+      .avatar-uploader-icon {
+        font-size: 28px;
+        color: #8c939d;
+        width: 100px;
+        height: 100px;
+        line-height: 100px;
+        text-align: center;
+      }
+    }
   }
 }
 </style>

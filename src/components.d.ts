@@ -9,6 +9,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    AvatarCropper: typeof import('./components/AvatarCropper.vue')['default']
     CustomCard: typeof import('./components/CustomCard.vue')['default']
     CustomDialog: typeof import('./components/CustomDialog.vue')['default']
     CustomDrawer: typeof import('./components/CustomDrawer.vue')['default']
@@ -41,9 +42,6 @@ declare module '@vue/runtime-core' {
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     ElTag: typeof import('element-plus/es')['ElTag']
-    ElTe: typeof import('element-plus/es')['ElTe']
-    ElText: typeof import('element-plus/es')['ElText']
-    ElTextarea: typeof import('element-plus/es')['ElTextarea']
     ElUpload: typeof import('element-plus/es')['ElUpload']
     IEpCaretBottom: typeof import('~icons/ep/caret-bottom')['default']
     IEpCollection: typeof import('~icons/ep/collection')['default']

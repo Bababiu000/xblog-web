@@ -6,6 +6,8 @@
     <el-container class="right-side">
       <el-header>
         <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" :ellipsis="false" router>
+          <el-menu-item index="/index">首页</el-menu-item>
+          <el-menu-item index="/messageBoard">留言板</el-menu-item>
           <el-menu-item v-for="item in menuList" :key="item.path" :index="'/' + item.path">
             {{ item.name }}
           </el-menu-item>

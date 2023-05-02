@@ -85,13 +85,13 @@ export const usePage = opts => {
   }
   // 提交新增或更新
   const saveForm = () => {
-    proxy.$http.post(api.saveUrl, formData.value).then(res => {
-      proxy.$message({
-        message: '操作成功',
-        type: 'success'
-      })
-      getList()
-    })
+    proxy.$http.post(api.saveUrl, formData.value).then(
+      res => {
+        proxy.$message.success('操作成功')
+        getList()
+      },
+      err => err
+    )
   }
   // 重置查询参数
   const resetSearch = () => {
